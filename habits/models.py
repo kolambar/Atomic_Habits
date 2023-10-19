@@ -20,6 +20,7 @@ class Schedule(models.Model):
 
     sat = models.TimeField(verbose_name='время для привычки в сб')
     sun = models.TimeField(verbose_name='время для привычки в вс')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Создатель', null=True)
 
 
 class Period(models.Model):
@@ -31,6 +32,7 @@ class Period(models.Model):
 
     # отсчитывает period от последнего раза
     last_event = models.TimeField(verbose_name='время последнего выполнения', **NULLABLE)
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Создатель', null=True)
 
 
 class Habit(models.Model):
@@ -47,5 +49,5 @@ class Habit(models.Model):
                                         verbose_name='связанная привычка поощрения', **NULLABLE)
     time_to_done = models.DurationField(verbose_name='время на выполнение привычки')
 
-    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Создатель')
+    owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Создатель', null=True)
     is_public = models.BooleanField(verbose_name='видна другим пользователям')  # чтобы делиться привычкой с другими
