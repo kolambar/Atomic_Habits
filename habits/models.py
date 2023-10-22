@@ -29,8 +29,7 @@ class Schedule(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Создатель', null=True)
 
     def save(self, *args, **kwargs):
-        if (not self.mon and not self.tue and not self.wed and not self.th and not self.fri
-                and not self.sat and not self.sun):
+        if not any((self.mon, self.tue, self.wed, self.th, self.fri, self.sat, self.sun)):
             raise ValidationError("Schedule must have at least 1 day on week to work")
 
         super(Schedule, self).save(*args, **kwargs)
@@ -52,6 +51,9 @@ class Period(models.Model):
 
 
 class Habit(models.Model):
+    """
+    Привычка
+    """
     action = models.CharField(max_length=100, verbose_name='действие', unique=True)
     place = models.CharField(max_length=100, verbose_name='место для привычки', **NULLABLE)
 

@@ -30,6 +30,7 @@ class User(AbstractUser):
     username = None
     email = models.EmailField(unique=True, verbose_name='email')
     telegram = models.URLField(verbose_name='ссылка на телеграмм', **NULLABLE)
+    telegram_id = models.CharField(verbose_name='id телеграмма', **NULLABLE)
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = []

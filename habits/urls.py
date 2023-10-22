@@ -1,8 +1,7 @@
 from django.urls import path
 
 from habits.apps import HabitsConfig
-from habits.views.habits import PublicHabitListView, HabitListView, HabitDetailView, HabitCreateView, HabitUpdateView, \
-    HabitDeleteView
+from habits.views.habits import PublicHabitListView, HabitListView, HabitCreateView, HabitView
 from habits.views.timings import ScheduleCreateView, PeriodCreateView, ScheduleUpdateView, ScheduleDeleteView, \
     PeriodUpdateView, PeriodDeleteView
 
@@ -23,8 +22,6 @@ urlpatterns = [
     # адреса страниц для работы с привычками
     path('', PublicHabitListView.as_view(), name='public_habits'),
     path('my/', HabitListView.as_view(), name='my_habits'),
-    path('<int:pk>/', HabitDetailView.as_view(), name='habit'),
     path('create_habit/', HabitCreateView.as_view(), name='create_habit'),
-    path('update_habit/<int:pk>/', HabitUpdateView.as_view(), name='update_habit'),
-    path('delete_habit/<int:pk>/', HabitDeleteView.as_view(), name='delete_habit'),
+    path('habit/<int:pk>/', HabitView.as_view(), name='habit'),
 ]
