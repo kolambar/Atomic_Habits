@@ -13,23 +13,6 @@ class HabitView(RetrieveUpdateDestroyAPIView):
     serializer_class = HabitSerializer
     permission_classes = [IsOwner]
 
-# class HabitDetailView(RetrieveAPIView):
-#     queryset = Habit.objects.all()
-#     serializer_class = HabitSerializer
-#     permission_classes = [IsOwner]
-#
-#
-# class HabitUpdateView(UpdateAPIView):
-#     queryset = Habit.objects.all()
-#     serializer_class = HabitSerializer
-#     permission_classes = [IsOwner]
-#
-#
-# class HabitDeleteView(DestroyAPIView):
-#     queryset = Habit.objects.all()
-#     serializer_class = HabitSerializer
-#     permission_classes = [IsOwner]
-
 
 class HabitListView(ListAPIView):
     serializer_class = HabitSerializer

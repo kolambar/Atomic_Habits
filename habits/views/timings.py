@@ -1,4 +1,4 @@
-from rest_framework.generics import UpdateAPIView, CreateAPIView, DestroyAPIView
+from rest_framework.generics import UpdateAPIView, CreateAPIView, DestroyAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated
 
 from habits.models import Schedule, Period
@@ -15,13 +15,7 @@ class ScheduleCreateView(CreateAPIView):
         serializer.save(owner=self.request.user)
 
 
-class ScheduleUpdateView(UpdateAPIView):
-    queryset = Schedule.objects.all()
-    serializer_class = ScheduleSerializer
-    permission_classes = [IsOwner]
-
-
-class ScheduleDeleteView(DestroyAPIView):
+class ScheduleView(RetrieveUpdateDestroyAPIView):
     queryset = Schedule.objects.all()
     serializer_class = ScheduleSerializer
     permission_classes = [IsOwner]
@@ -36,13 +30,7 @@ class PeriodCreateView(CreateAPIView):
         serializer.save(owner=self.request.user)
 
 
-class PeriodUpdateView(UpdateAPIView):
-    queryset = Period.objects.all()
-    serializer_class = PeriodSerializer
-    permission_classes = [IsOwner]
-
-
-class PeriodDeleteView(DestroyAPIView):
+class PeriodView(RetrieveUpdateDestroyAPIView):
     queryset = Period.objects.all()
     serializer_class = PeriodSerializer
     permission_classes = [IsOwner]
