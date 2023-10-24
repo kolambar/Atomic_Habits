@@ -1,22 +1,34 @@
 from django.core.exceptions import ValidationError
 
 
-def check_timings(self):
+def check_timings(value):
     """
     Проверяет, что у привычки есть только один вид расписания (on_schedule или periodic)
-    :param self:
+    :param value:
     :return:
     """
-    if self.on_schedule and self.periodic:
-        raise ValidationError("Both on_schedule and periodic can't be set at the same time.")
+    if value.on_schedule and value.periodic:
+        raise ValidationError("Привычка может работать либо по расписанию либо с интервалом.")
 
 
-def check_reward_character(self):
+def check_reward_character(value):
     """
     Проверяет: привычка, либо сама по себе поощряющая, либо есть поощрение или связанная привычка, которая поощряет.
     Все три поля могут быть пустыми.
-    :param self:
+    :param value:
     :return:
     """
-    if bool(self.reward) + bool(self.is_it_rewarding_habit) + bool(self.rewarding_habit) > 1:
-        raise ValidationError("reward, is_it_rewarding_habit and rewarding_habit can't be set at the same time.")
+    if bool(value.reward) + bool(value.is_it_rewarding_habit) + bool(value.rewarding_habit) > 1:
+        raise ValidationError("Вознаграждение, признак вознаграждающей привычки, ссылка на вознаграждающую привычку"
+                              " - только одно из этих полей может быть заполнено.")
+
+
+def check_rewarding_habit(value):
+    """
+    Проверяет, что связанная привычка является поощряющей, а не atomic
+    :param value:
+    :return:
+    """
+    if value.rewarding_habit:
+        if not value.rewarding_habit.is_it_rewarding_habit:
+            raise ValidationError("Нельзя в качестве поощряющей привычки выбрать обычную.")

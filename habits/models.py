@@ -4,7 +4,7 @@ from django.core.exceptions import ValidationError
 from django.core.validators import MaxValueValidator
 from django.db import models
 
-from habits.validators import check_timings, check_reward_character
+from habits.validators import check_timings, check_reward_character, check_rewarding_habit
 from users.models import User
 
 # Create your models here.
@@ -76,5 +76,6 @@ class Habit(models.Model):
     def save(self, *args, **kwargs):
         check_timings(self)
         check_reward_character(self)
+        check_rewarding_habit(self)
 
         super(Habit, self).save(*args, **kwargs)
