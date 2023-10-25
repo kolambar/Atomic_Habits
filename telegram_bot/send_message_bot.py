@@ -7,7 +7,7 @@ django.setup()
 from telegram import Bot
 
 
-async def send_tg_message(bot_token, chat_id, text):
+async def send_to_tg(bot_token, chat_id, text):
     """
     Функция для отправки сообщений в телеграмме
     :param bot_token:

@@ -20,7 +20,8 @@ class UserRegisterView(CreateAPIView):
         # Создайте пользователя, установив пароль с использованием set_password
         user = User.objects.create_user(
             email=user_data['email'],
-            password=user_data['password']
+            password=user_data['password'],
+            telegram=user_data['telegram']
         )
 
         user.save()

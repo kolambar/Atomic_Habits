@@ -1,8 +1,15 @@
 from datetime import datetime
 from config import settings
+
+import django
+import os
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
+django.setup()
+
 from habits.models import Habit, Schedule
-from habits.services import create_message
-from telegram_bot.send_message_bot import send_tg_message
+from habits.services import send_tg_message
+
 
 day_of_week = {
     0: Schedule.mon,
@@ -16,19 +23,22 @@ day_of_week = {
 }
 
 
-def check_schedules():
+def task_check_schedules():
+    print('asd')
     current_day = datetime.today().weekday()
     time_with_minutes = datetime.strptime(datetime.today().strftime('%H:%M'), '%H:%M').time()
 
     habits_on_schedule = Habit.objects.filter(on_schedule__isnull=False)
+
+    print(habits_on_schedule)
     for habit in habits_on_schedule:
+        print(habit.on_schedule.day_of_week[current_day])
         # проверяет, пришло ли время отправлять
         if habit.on_schedule.day_of_week[current_day] == time_with_minutes:
-            message = create_message(habit)
-            send_tg_message(settings.TELEGRAM_TOKEN, habit.owner.telegram_id, message)
+            send_tg_message(habit, settings.TELEGRAM_TOKEN)
 
 
-def check_periods():
+def task_check_periods():
     exact_moment = datetime.today()
 
     periodic_habits = Habit.objects.filter(periodic__isnull=False)
@@ -40,10 +50,13 @@ def check_periods():
 
             # проверяет, отправлялось ли уведомление
             if not period.last_event:
-                message = create_message(habit)
-                send_tg_message(settings.TELEGRAM_TOKEN, habit.owner.telegram_id, message)
+                send_tg_message(habit, settings.TELEGRAM_TOKEN)
             else:
                 # проверяет, что прошло достаточно времени после прошлой отправки
                 if exact_moment - datetime.combine(datetime.today(), period.last_event) >= period.period:
-                    message = create_message(habit)
-                    send_tg_message(settings.TELEGRAM_TOKEN, habit.owner.telegram_id, message)
+                    send_tg_message(habit, settings.TELEGRAM_TOKEN)
+
+
+if __name__ == '__main__':
+
+    task_check_schedules()

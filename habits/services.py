@@ -1,4 +1,5 @@
 from habits.models import Habit
+from telegram_bot.send_message_bot import send_to_tg
 
 
 def create_message(habit: Habit):
@@ -17,3 +18,8 @@ def create_message(habit: Habit):
         call_to_act += f'После привычки вас ждет {habit.rewarding_habit}!'
 
     return reminder_message, call_to_act
+
+
+def send_tg_message(habit, token):
+    message = create_message(habit)
+    send_to_tg(token, habit.owner.telegram_id, message)

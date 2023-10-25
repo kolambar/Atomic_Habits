@@ -8,5 +8,5 @@ from users.models import User
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('email', )
-    search_fields = ('email', )
+    list_display = ('email', 'telegram', 'telegram_id', )
+    search_fields = ('email', 'telegram', )

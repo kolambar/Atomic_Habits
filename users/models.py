@@ -10,13 +10,13 @@ NULLABLE = {'blank': True, 'null': True}
 
 class CustomUserManager(BaseUserManager):
 
-    def create_user(self, email, password=None, **extra_fields):  # метод переопределяется, чтобы не нужно было username
+    def create_user(self, email, password=None, telegram=None, **extra_fields):  # метод переопределяется, чтобы не нужно было username
 
         if not email:
             raise ValueError('The Email field must be set')
 
         email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
+        user = self.model(email=email, telegram=telegram, **extra_fields)
         user.set_password(password)
 
         user.save(using=self._db)
@@ -29,7 +29,7 @@ class CustomUserManager(BaseUserManager):
 class User(AbstractUser):
     username = None
     email = models.EmailField(unique=True, verbose_name='email')
-    telegram = models.URLField(verbose_name='ссылка на телеграмм', **NULLABLE)
+    telegram = models.URLField(verbose_name='ссылка на телеграмм', **NULLABLE, max_length=200)
     telegram_id = models.CharField(verbose_name='id телеграмма', **NULLABLE)
 
     USERNAME_FIELD = "email"
