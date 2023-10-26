@@ -10,7 +10,8 @@ NULLABLE = {'blank': True, 'null': True}
 
 class CustomUserManager(BaseUserManager):
 
-    def create_user(self, email, password=None, telegram=None, **extra_fields):  # метод переопределяется, чтобы не нужно было username
+    def create_user(self, email, password=None, telegram=None, **extra_fields):  # метод переопределяется,
+        # чтобы не нужно было username
 
         if not email:
             raise ValueError('The Email field must be set')

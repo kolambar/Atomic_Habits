@@ -5,7 +5,7 @@ from habits.models import Schedule, Period
 from habits.permissions import IsOwner
 from habits.serializers.timings import ScheduleSerializer, PeriodSerializer
 
-
+# Контроллеры расписания
 class ScheduleCreateView(CreateAPIView):
     queryset = Schedule.objects.all()
     serializer_class = ScheduleSerializer
@@ -21,6 +21,7 @@ class ScheduleView(RetrieveUpdateDestroyAPIView):
     permission_classes = [IsOwner]
 
 
+# Контроллеры периодов
 class PeriodCreateView(CreateAPIView):
     queryset = Period.objects.all()
     serializer_class = PeriodSerializer

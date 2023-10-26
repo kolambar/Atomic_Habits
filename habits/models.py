@@ -29,6 +29,7 @@ class Schedule(models.Model):
     owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Создатель', null=True)
 
     def save(self, *args, **kwargs):
+        # Проверяет, что хотябы один из дней заполнен, чтобы привычки выполнялись не реже раза в неделю
         if not any((self.mon, self.tue, self.wed, self.th, self.fri, self.sat, self.sun)):
             raise ValidationError("Schedule must have at least 1 day on week to work")
 
@@ -74,6 +75,7 @@ class Habit(models.Model):
     is_public = models.BooleanField(verbose_name='видна другим пользователям')  # чтобы делиться привычкой с другими
 
     def save(self, *args, **kwargs):
+        # проходит через 3 валидатора
         check_timings(self)
         check_reward_character(self)
         check_rewarding_habit(self)

@@ -1,6 +1,6 @@
 import asyncio
 
-from habits.models import Habit
+from habits.models import Habit, Period
 from telegram_bot.send_message_bot import send_to_tg
 
 
@@ -21,12 +21,14 @@ def create_message(habit: Habit):
     return call_to_act
 
 
-def send_tg_message(habit, token):
+def send_tg_message(habit: Habit, token):
     """ Объединяет в себе функции"""
     message = create_message(habit)
+    # Асинхронная отправко сообщения в телеграмме
     asyncio.run(send_to_tg(token, habit.owner.telegram_id, message))
 
 
-def set_last_event(period, exact_moment):
-    period.last_event = exact_moment
+def set_last_event(period: Period, time):
+    """ Сохраняет время в поле last_event у объекта Period"""
+    period.last_event = time
     period.save()

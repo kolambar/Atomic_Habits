@@ -1,4 +1,7 @@
 from datetime import datetime
+
+from celery import shared_task
+
 from config import settings
 
 import django
@@ -7,7 +10,7 @@ import os
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
 
-from habits.models import Habit, Schedule
+from habits.models import Habit
 from habits.services import send_tg_message, set_last_event
 
 day_of_week = {
@@ -21,6 +24,7 @@ day_of_week = {
 }
 
 
+@shared_task
 def task_check_schedules():
     """ Задача для отправки напоминаний о привычках, завязанных на расписанию"""
     current_day = datetime.today().weekday()  # получает день недели
@@ -41,6 +45,7 @@ def task_check_schedules():
                 send_tg_message(habit, settings.TELEGRAM_TOKEN)
 
 
+@shared_task
 def task_check_periods():
     """ Задача для отправки напоминаний о привычках, завязанных на периодичности"""
     exact_moment = datetime.today()
@@ -61,8 +66,3 @@ def task_check_periods():
                 if exact_moment - datetime.combine(datetime.today(), period.last_event) >= period.period:
                     send_tg_message(habit, settings.TELEGRAM_TOKEN)
                     set_last_event(period, exact_moment)
-
-
-if __name__ == '__main__':
-
-    task_check_schedules()
