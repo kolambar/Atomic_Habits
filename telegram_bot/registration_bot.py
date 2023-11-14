@@ -1,6 +1,11 @@
 import os
+import sys
 import logging
 import django
+
+# Эти две строки для docker compose. Чтобы при подъеме контейнеров находились настройки
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.append(BASE_DIR)
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'config.settings')
 django.setup()
